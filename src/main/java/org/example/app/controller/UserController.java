@@ -1,16 +1,18 @@
-package org.example.controller;
+package org.example.app.controller;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.UserDTO;
-import org.example.manager.UserManager;
+import org.example.app.dto.UserDTO;
+import org.example.app.manager.UserManager;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.List;
 
+@Controller
 @RequiredArgsConstructor
 public class UserController {
     private final UserManager manager;

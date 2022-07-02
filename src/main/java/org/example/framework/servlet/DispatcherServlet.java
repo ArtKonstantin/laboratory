@@ -1,16 +1,20 @@
-package org.example.servlet;
+package org.example.framework.servlet;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.example.attribute.ContextAttributes;
-import org.example.handler.WebHandler;
+import org.example.framework.attribute.ContextAttributes;
+import org.example.framework.handler.WebHandler;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 import java.util.Map;
+
+import static org.example.framework.attribute.ContextAttributes.SPRING_CONTEXT;
 
 @WebServlet(value = "/", loadOnStartup = 1)
 @Slf4j
@@ -19,7 +23,8 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        handlers = (Map<String, WebHandler>) getServletContext().getAttribute(ContextAttributes.HANDLERS);
+        final AnnotationConfigApplicationContext springContext = ((AnnotationConfigApplicationContext) getServletContext().getAttribute(SPRING_CONTEXT));
+        handlers = (Map<String, WebHandler>) springContext.getBean("handlers");
     }
 
     @Override
