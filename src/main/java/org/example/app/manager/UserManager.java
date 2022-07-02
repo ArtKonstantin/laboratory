@@ -35,7 +35,8 @@ public class UserManager {
     public void deleteById(int id) {
         for (UserDTO user : users) {
             if (user.getId() == id) {
-                users.remove(id);
+                users.remove(user);
+                return;
             }
         }
         throw new UserNotFoundExeption();
