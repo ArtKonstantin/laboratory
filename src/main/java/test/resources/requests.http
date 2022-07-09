@@ -1,19 +1,38 @@
 ### users.getAll
-GET http://localhost:8080/users.getAll
+GET http://localhost:8080/users
 X-Login: vasya
 X-Password: secret
 
 ### users.getById
-GET http://localhost:8080/users.getById?id=5
+GET http://localhost:8080/users/1
 X-Login: vasya
 X-Password: secret
 
 ### users.create
-GET http://localhost:8080/users.create?login=sasha&password=password
+POST http://localhost:8080/users
+X-Login: vasya
+X-Password: secret
+Content-Type: application/json
+
+{
+  "id": 0,
+  "login": "anya",
+  "password": "password"
+}
+
+### users.deleteById
+DELETE http://localhost:8080/users/10
 X-Login: vasya
 X-Password: secret
 
-### users.deleteById
-GET http://localhost:8080/users.deleteById?id=3
+### users.update
+PUT http://localhost:8080/users
 X-Login: vasya
 X-Password: secret
+Content-Type: application/json
+
+{
+  "id": 1,
+  "login": "vanya",
+  "password": "password"
+}

@@ -12,10 +12,6 @@ import javax.sql.DataSource;
 
 @Configuration
 public class ApplicationConfiguration {
-    @Bean
-    public Gson gson() {
-        return new Gson();
-    }
 
     @Bean(destroyMethod = "close")
     public HikariDataSource dataSource() {

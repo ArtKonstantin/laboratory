@@ -1,52 +1,49 @@
 package org.example.app.controller;
 
-import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.example.app.dto.UserDTO;
+import org.example.app.dto.UserRQ;
+import org.example.app.dto.UserRS;
 import org.example.app.manager.UserManager;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.example.framework.security.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserManager manager;
-    private final Gson gson;
 
-    @RequestMapping("/users.getAll")
-    public void getAll(final HttpServletRequest req, final HttpServletResponse res) throws ServletException, IOException {
+    @GetMapping("/users")
+    public List<UserRS> getAll(@RequestAttribute final Authentication authentication, final HttpServletRequest req, final HttpServletResponse res) throws ServletException, IOException {
 
-        final List<UserDTO> responseDTO = manager.getAll();
-        res.getWriter().write(gson.toJson(responseDTO));
+        return manager.getAll();
     }
 
-    @RequestMapping("/users.getById")
-    public void getById(final HttpServletRequest req, final HttpServletResponse res) throws ServletException, IOException {
+    @GetMapping("/users/{id}")
+    public UserRS getById(@RequestAttribute final Authentication authentication, @PathVariable final long id, final HttpServletResponse res) throws ServletException, IOException {
 
-        final long id = Long.parseLong(req.getParameter("id"));
-        final UserDTO responseDTO = manager.getById(id);
-        res.getWriter().write(gson.toJson(responseDTO));
+        final UserRS responseDTO = manager.getById(id);
+        return responseDTO;
     }
 
-    @RequestMapping("/users.create")
-    public void create(final HttpServletRequest req, final HttpServletResponse res) throws ServletException, IOException {
-        final String login = req.getParameter("login");
-        final String password = req.getParameter("password");
-        final UserDTO responseDTO = manager.create(login, password);
-        res.getWriter().write(gson.toJson(responseDTO));
+    @PostMapping("/users")
+    public void create(@RequestAttribute final Authentication authentication, @RequestBody final UserRQ requestDTO) throws ServletException, IOException {
+        manager.create(requestDTO);
     }
 
-    @RequestMapping("/users.deleteById")
-    public void deleteById(final HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    @DeleteMapping("/users/{id}")
+    public void deleteById(@RequestAttribute final Authentication authentication, @PathVariable final long id, final HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-        final long id = Long.parseLong(req.getParameter("id"));
         manager.deleteById(id);
     }
 
+    @PutMapping("/users")
+    public UserRS update(@RequestAttribute final Authentication authentication, @RequestBody final UserRQ requestDTO) throws ServletException, IOException {
+        return manager.update(requestDTO);
+    }
 }
